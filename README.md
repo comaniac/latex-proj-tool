@@ -1,5 +1,8 @@
 # Latex Flatter
-Flatten a Latex project to a single .tex file. This is mainly inspired by
+Flatten a Latex project to a single .tex file. This is useful if you want to
+use latexdiff or other Latex tools that require a single .tex file.
+
+This is mainly inspired by
 this post: http://dropbearcode.blogspot.com/2011/09/multiple-file-latex-diff.html
 
 ## Usage
