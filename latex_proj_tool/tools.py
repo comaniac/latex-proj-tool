@@ -36,6 +36,8 @@ class TexVisitor:
     input_pattern = re.compile(r"\\input{(.*)}")
 
     def __init__(self, root_file_name: str):
+        if root_file_name.find(" ") != -1:
+            raise ValueError("Do not support file path with spaces: %s" %s root_file_name)
         self.root_file_name = root_file_name
         self.root_path, _ = os.path.split(root_file_name)
         self.logger = get_logger(self.__class__.__name__)
