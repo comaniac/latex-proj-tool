@@ -36,9 +36,9 @@ python3 -m latex_proj_tool find_unused my_project/main.tex
 List all unused files in this project, excluding some files:
 ```
 python3 -m latex_proj_tool find_unused my_project/main.tex --exclude-extensions cls,sty,bst
-``
+```
 
 List all unused files in this project, excluding some directories:
 ```
 python3 -m latex_proj_tool find_unused my_project/main.tex --exclude-dirs backup
-````
+```
