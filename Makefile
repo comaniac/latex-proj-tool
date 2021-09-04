@@ -8,10 +8,10 @@ type:
 	python3 -m mypy ${PRJ_NAME} --ignore-missing-imports --install-types --non-interactive
 
 format:
-	python3 -m black -l 100 `git diff --name-only --diff-filter=ACMRTUX origin/main -- "*.py" "*.pyi"`
+	python3 -m black -l 100 `git diff --name-only --diff-filter=ACMRTUX origin/main -- "*.py" "*.pyi"` ${PRJ_NAME}
 
 check_format:
-	python3 -m black -l 100 --check `git diff --name-only --diff-filter=ACMRTUX origin/main -- "*.py" "*.pyi"`
+	python3 -m black -l 100 --check `git diff --name-only --diff-filter=ACMRTUX origin/main -- "*.py" "*.pyi"` ${PRJ_NAME}
 
 test:
 	python3 -m pytest --lf
