@@ -1,0 +1,29 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Setup
+        run: |
+            pip3 install argparse pytest mypy black pylint
+      - name: Checkout PR
+        uses: actions/checkout@v1
+      - name: Check format with black
+        run: make check_format
+      - name: Lint with pylint
+        run: make lint
+      - name: Check type with mypy
+        run: make type
+      - name: Unit test with pytest
+        run: make test
+

@@ -25,7 +25,7 @@ from .logger import get_logger
 
 
 class TexVisitor:
-    """Visit the .tex files recursively by \input{} and run the given callback.
+    """Visit the .tex files recursively by \\input{} and run the given callback.
 
     Parameters
     ----------
@@ -37,7 +37,7 @@ class TexVisitor:
 
     def __init__(self, root_file_name: str):
         if root_file_name.find(" ") != -1:
-            raise ValueError("Do not support file path with spaces: %s" %s root_file_name)
+            raise ValueError("Do not support file path with spaces: %s" % root_file_name)
         self.root_file_name = root_file_name
         self.root_path, _ = os.path.split(root_file_name)
         self.logger = get_logger(self.__class__.__name__)
@@ -53,9 +53,13 @@ class TexVisitor:
         file_name = file_name if file_name is not None else self.root_file_name
 
         self.file_callback(file_name)
+        if not os.path.exists(file_name):
+            self.logger.warning("File %s is missing", file_name)
+            return
+
         with open(file_name, "r") as tex_file:
             for line in tex_file:
-                if line.startswith("%"):
+                if line.strip().startswith("%"):
                     continue
                 match = self.input_pattern.search(line)
                 if match:
@@ -71,11 +75,9 @@ class TexVisitor:
 
     def line_callback(self, line: str):
         """The callback being executed for each visited line."""
-        pass
 
     def file_callback(self, file_name: str):
         """The callback being executed f or each visited file."""
-        pass
 
 
 class TexFlatter(TexVisitor):
@@ -99,7 +101,7 @@ class TexFlatter(TexVisitor):
         with open(self.out_file_name, "w") as out_file:
             self.out_file = out_file
             self.visit(self.root_file_name)
-        self.logger.info("The output has been written to %s" % self.out_file_name)
+        self.logger.info("The output has been written to %s", self.out_file_name)
         self.out_file = None
 
     def line_callback(self, line: str):
@@ -107,7 +109,7 @@ class TexFlatter(TexVisitor):
         self.out_file.write(line)
 
     def file_callback(self, file_name: str):
-        self.logger.info("Visit %s" % file_name)
+        self.logger.info("Visit %s", file_name)
 
 
 class UnusedFileFinder(TexVisitor):
@@ -127,14 +129,12 @@ class UnusedFileFinder(TexVisitor):
         self.exclude_dirs = ()
         if exclude_dirs:
             self.exclude_dirs = tuple(
-                [
-                    self.canonicalize_path(os.path.join(self.root_path, d))
-                    for d in exclude_dirs.split(",")
-                ]
+                self.canonicalize_path(os.path.join(self.root_path, d))
+                for d in exclude_dirs.split(",")
             )
 
         exclude_extension_tuple = tuple(
-            [e if e.startswith(".") else ".{}".format(e) for e in exclude_extensions.split(",")]
+            e if e.startswith(".") else ".{}".format(e) for e in exclude_extensions.split(",")
         )
 
         # Create a mapping from file path without extension to the complete file path.
@@ -159,13 +159,14 @@ class UnusedFileFinder(TexVisitor):
 
     def run(self):
         self.visit(self.root_file_name)
-        count = 0
+        unuseds = []
         for unused in self.unused_files.values():
             if self.exclude_dirs and unused.startswith(self.exclude_dirs):
                 continue
-            count += 1
-            self.logger.info("Unused file: %s" % os.path.relpath(unused))
-        self.logger.info("Total %d unused files" % count)
+            unuseds.append(unused)
+            self.logger.info("Unused file: %s", os.path.relpath(unused))
+        self.logger.info("Total %d unused files", len(unuseds))
+        return unuseds
 
     def line_callback(self, line: str):
         for pattern in self.patterns:

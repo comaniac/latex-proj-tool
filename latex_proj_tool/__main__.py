@@ -72,7 +72,7 @@ def main():
     elif config.operation == "find_unused":
         tools.UnusedFileFinder(config.root, config.exclude_dirs, config.exclude_extensions).run()
     else:
-        logger.error("Unrecognized operation: %s" % config.operation)
+        logger.error("Unrecognized operation: %s", config.operation)
 
 
 if __name__ == "__main__":
