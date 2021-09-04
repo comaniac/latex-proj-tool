@@ -17,6 +17,7 @@
 """
 A tool set to work on Latex projects.
 """
+from typing import Tuple
 import glob
 import os
 import re
@@ -126,12 +127,14 @@ class UnusedFileFinder(TexVisitor):
     def __init__(self, root_file_name: str, exclude_dirs: str, exclude_extensions: str):
         super().__init__(root_file_name)
         all_files = set(glob.glob("{}/**/*".format(self.root_path), recursive=True))
-        self.exclude_dirs = ()
-        if exclude_dirs:
-            self.exclude_dirs = tuple(
+        self.exclude_dirs = (
+            tuple(
                 self.canonicalize_path(os.path.join(self.root_path, d))
                 for d in exclude_dirs.split(",")
             )
+            if exclude_dirs
+            else ()
+        )
 
         exclude_extension_tuple = tuple(
             e if e.startswith(".") else ".{}".format(e) for e in exclude_extensions.split(",")

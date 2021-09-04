@@ -21,7 +21,7 @@ The format and config of logging.
 import logging
 
 
-LOGGER_TABLE = {}
+LOGGER_TABLE = {} # type: ignore
 
 FORMATTER = logging.Formatter(
     "[%(asctime)s] %(levelname)7s %(name)s: %(message)s", "%Y-%m-%d %H:%M:%S"
