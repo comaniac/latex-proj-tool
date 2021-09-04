@@ -17,7 +17,6 @@
 """
 A tool set to work on Latex projects.
 """
-from typing import Tuple
 import glob
 import os
 import re
