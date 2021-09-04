@@ -1,5 +1,7 @@
 # Latex Project Managment Tool
 
+[![Build](https://github.com/comaniac/latex-proj-tool/actions/workflows/build.yml/badge.svg)](https://github.com/comaniac/latex-proj-tool/actions/workflows/build.yml)
+
 A toolset to traverse and manipulate a Latex project with multiple .tex files.
 Here are the currently supported functionalities. You are welcome to contribute more features :)
 

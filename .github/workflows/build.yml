@@ -11,13 +11,18 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.6", "3.7", "3.8"]
     steps:
-      - name: Setup
-        run: |
-            pip3 install argparse pytest mypy black pylint
       - name: Checkout PR
         uses: actions/checkout@v1
+      - name: Setup Python
+        uses: actions/setup-python@v2
+      - name: Install requirements
+        run: |
+            pip3 install argparse pytest mypy black pylint
       - name: Check format with black
         run: make check_format
       - name: Lint with pylint
