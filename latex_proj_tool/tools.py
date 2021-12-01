@@ -37,7 +37,7 @@ class TexVisitor:
 
     def __init__(self, root_file_name: str):
         if root_file_name.find(" ") != -1:
-            raise ValueError("Do not support file path with spaces: %s" % root_file_name)
+            raise ValueError(f"Do not support file path with spaces: {root_file_name}")
         self.root_file_name = root_file_name
         self.root_path, _ = os.path.split(root_file_name)
         self.logger = get_logger(self.__class__.__name__)
@@ -125,7 +125,7 @@ class UnusedFileFinder(TexVisitor):
 
     def __init__(self, root_file_name: str, exclude_dirs: str, exclude_extensions: str):
         super().__init__(root_file_name)
-        all_files = set(glob.glob("{}/**/*".format(self.root_path), recursive=True))
+        all_files = set(glob.glob(f"{root_path}/**/*", recursive=True))
         self.exclude_dirs = (
             tuple(
                 self.canonicalize_path(os.path.join(self.root_path, d))
@@ -136,7 +136,7 @@ class UnusedFileFinder(TexVisitor):
         )
 
         exclude_extension_tuple = tuple(
-            e if e.startswith(".") else ".{}".format(e) for e in exclude_extensions.split(",")
+            e if e.startswith(".") else f".{e}" for e in exclude_extensions.split(",")
         )
 
         # Create a mapping from file path without extension to the complete file path.
