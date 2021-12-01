@@ -18,8 +18,8 @@ this post: http://dropbearcode.blogspot.com/2011/09/multiple-file-latex-diff.htm
 1. Make sure you have Perl 5.8+ in your environment.
 2. Download `latexdiff` from https://www.ctan.org/tex-archive/support/latexdiff
 3. `unzip latexdiff`
-4. `python3 -m latex_proj_tool flat old_project/main.tex old.tex`
-5. `python3 -m latex_proj_tool flat new_project/main.tex new.tex`
+4. `python3 -m latex_proj_tool flat old_project/main.tex --output old.tex`
+5. `python3 -m latex_proj_tool flat new_project/main.tex --output new.tex`
 6. `latexdiff old.tex new.tex > temp.tex`
 7. `sed 's/^M//' tmp.tex > diff.tex`
 8. Compile `diff.tex` to get the PDF.
