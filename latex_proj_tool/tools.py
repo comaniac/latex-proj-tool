@@ -125,7 +125,7 @@ class UnusedFileFinder(TexVisitor):
 
     def __init__(self, root_file_name: str, exclude_dirs: str, exclude_extensions: str):
         super().__init__(root_file_name)
-        all_files = set(glob.glob(f"{root_path}/**/*", recursive=True))
+        all_files = set(glob.glob(f"{self.root_path}/**/*", recursive=True))
         self.exclude_dirs = (
             tuple(
                 self.canonicalize_path(os.path.join(self.root_path, d))
